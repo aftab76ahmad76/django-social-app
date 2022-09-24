@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+all profiles
+{% endblock title %}
+
+{% block content %}
+    {% if is_empty %}
+        <h2>No profiles to interact with</h2>
+    {% else %}
+        {% for item in qs %}
+            <div class="ui segment">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="three wide column">
+                            <img class="ui small circular image" src={{ item.avatar.url }} />
+                        </div>
+                        <div class="thirteen wide column">
+                            <h3>{{ item.user }}</h3>
+                            <p>{{ item.bio }}</p>
+                            <a href={{item.get_absolute_url}}>
+                                <button class="ui button primary mb-5 w-big">See profile</button>
+                            </a>
+                            <br>
+                            {% if item.user not in rel_reciver and item.user not in rel_sender %}
+                               <form action={% url 'profiles:send-invite-view' %} method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="profile_pk" value={{ item.id }}>
+                                    <button class='ui positive basic button mb-5 w-big' type="submit">
+                                        <i class='plus square icon'></i>
+                                        Add friends
+                                    </button>
+                                </form>
+                            {% endif %}
+                            {% if item.user in rel_reciver and request.user not in item.friends.all %}
+                                <button class='ui disabled button mb-5 w-big' type="submit">
+                                    <i class='user icon'></i>
+                                    Waiting for approval
+                                </button>
+                            {% endif %}   
+                            {% if request.user in item.friends.all %}
+                                <form action={% url 'profiles:remove-friends-view' %} method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="profile_pk" value={{ item.id }}>
+                                        <button class='ui negative baisc button mb-5 w-big' type="submit">
+                                            <i class='minus square icon'></i>
+                                            Remove from friends
+                                        </button>
+                                </form>
+                            {% endif %}
+                    </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}
