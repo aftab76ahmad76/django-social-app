@@ -26,7 +26,7 @@ SECRET_KEY = "1d^qi4q$f@oo+6^v1r$=w$!8qtbo%ajzx9zx#ir=%@a5_43@9c"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["django-social-chat.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
