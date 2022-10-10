@@ -46,3 +46,7 @@ body {
 .myBtn{
   width: 100px !important;
 }
+
+.modal{
+  top: 10% !important;
+}
